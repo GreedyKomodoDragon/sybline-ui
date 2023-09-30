@@ -1,6 +1,6 @@
 import ActionRow from "./ActionRow";
 
-export default function BrokerTab() {
+export default function QueueTab() {
   return (
     <>
       <div class="container mx-auto py-4">
@@ -9,11 +9,10 @@ export default function BrokerTab() {
         </button>
       </div>
       <div class="container mx-auto py-8">
-        <hr class="mt-2 mb-4"/>
-        <ActionRow name="Broker Name" url="/brokers/name"/>
-        <ActionRow name="Broker Name 2" url="/brokers/name2"/>
+        <hr class="mt-2 mb-4" />
+        <ActionRow name="Queue Name" url="/queues/name"/>
+        <ActionRow name="Queue Name 2" url="/queues/name2"/>
       </div>
-
       <div class="flex justify-center mt-4 mb-8">
         <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full mr-2">
           1

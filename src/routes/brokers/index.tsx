@@ -1,6 +1,6 @@
 import BrokerTab from "~/components/BrokerTab";
 
-export default function Home() {
+export default function Brokers() {
   return (
     <BrokerTab />
   );

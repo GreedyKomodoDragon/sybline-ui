@@ -15,6 +15,7 @@ import {
 } from "solid-start";
 import "./root.css";
 import NavBar from "./components/NavBar";
+import Tabs from "./components/Tabs";
 
 export default function Root() {
   const location = useLocation();
@@ -30,7 +31,10 @@ export default function Root() {
         <Suspense>
           <ErrorBoundary>
             {location.pathname != "/login" && (
-              <NavBar />
+              <>
+                <NavBar />
+                <Tabs />
+              </>
             )}
             <Routes>
               <FileRoutes />
