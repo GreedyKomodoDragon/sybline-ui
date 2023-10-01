@@ -1,9 +1,13 @@
+import { useParams } from "solid-start";
+
 export default function Broker() {
+  const params = useParams<{ name: string }>();
+
   return (
     <>
       <header class="py-4">
         <div class="container mx-auto">
-          <h1 class="text-3xl font-semibold">Broker Name</h1>
+          <h1 class="text-3xl font-semibold">{params.name}</h1>
         </div>
       </header>
 
@@ -13,9 +17,7 @@ export default function Broker() {
           <ul class="mt-4">
             <li class="flex items-center justify-between py-2">
               <span>Item 1</span>
-              <a
-                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full flex items-center"
-              >
+              <a class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full flex items-center">
                 Go to
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
