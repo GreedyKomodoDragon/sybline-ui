@@ -1,6 +1,11 @@
+import { For, createResource } from "solid-js";
 import ActionRow from "./ActionRow";
+import { RoutingMapping, getRoutingMappings } from "~/rest";
+import Spinner from "./Spinner";
 
 export default function BrokerTab() {
+  const [data] = createResource(getRoutingMappings);
+
   return (
     <>
       <div class="container mx-auto py-4">
@@ -8,12 +13,19 @@ export default function BrokerTab() {
           Refresh
         </button>
       </div>
-      <div class="container mx-auto py-8">
-        <hr class="mt-2 mb-4"/>
-        <ActionRow name="Broker Name" url="/brokers/name"/>
-        <ActionRow name="Broker Name 2" url="/brokers/name2"/>
-      </div>
 
+      <div class="container mx-auto py-8">
+        <hr class="mt-2 mb-4" />
+        {data.loading && <Spinner />}
+        {(!data.loading && !data()) && <h2>No Routing Keys Found</h2>}
+        {data() && (
+          <For each={data()}>
+            {(routeMap: RoutingMapping, _) => (
+              <ActionRow name={routeMap.key} url={`/brokers/${routeMap.key}`} />
+            )}
+          </For>
+        )}
+      </div>
       <div class="flex justify-center mt-4 mb-8">
         <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full mr-2">
           1
