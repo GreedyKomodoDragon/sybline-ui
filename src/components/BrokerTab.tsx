@@ -4,28 +4,29 @@ import { getRoutingMappings } from "~/rest";
 import Spinner from "./Spinner";
 
 export default function BrokerTab() {
-  const [loading, setLoading] = createSignal<boolean>(true)
-  const [data, setData] = createSignal<string[]>([])
+  const [loading, setLoading] = createSignal<boolean>(true);
+  const [data, setData] = createSignal<string[]>([]);
 
   // first time fetch
   getRoutingMappings()
     .then((values) => {
-      setData(values.keys)
-      setLoading(false)
-    }).catch((err) => {
-      console.error(err)
+      setData(values.keys);
+      setLoading(false);
     })
-  
+    .catch((err) => {
+      console.error(err);
+    });
+
   return (
     <>
       <div class="container mx-auto py-4">
         <button
           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right"
           onclick={async () => {
-            setLoading(true)
-            const keys = await getRoutingMappings()
-            setData(keys.keys)
-            setLoading(false)
+            setLoading(true);
+            const keys = await getRoutingMappings();
+            setData(keys.keys);
+            setLoading(false);
           }}
         >
           Refresh
@@ -34,7 +35,11 @@ export default function BrokerTab() {
 
       <div class="container mx-auto py-8">
         <hr class="mt-2 mb-4" />
-        {loading() && <Spinner />}
+        {loading() && (
+          <div class="flex justify-center items-center py-2">
+            <Spinner />
+          </div>
+        )}
         {!loading() && !data() && <h2>No Routing Keys Found</h2>}
         {data() && (
           <For each={data()}>
