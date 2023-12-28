@@ -1,27 +1,45 @@
-import { For, createResource } from "solid-js";
+import { For, createSignal } from "solid-js";
 import ActionRow from "./ActionRow";
-import { RoutingMapping, getRoutingMappings } from "~/rest";
+import { getRoutingMappings } from "~/rest";
 import Spinner from "./Spinner";
 
 export default function BrokerTab() {
-  const [data] = createResource(getRoutingMappings);
+  const [loading, setLoading] = createSignal<boolean>(true)
+  const [data, setData] = createSignal<string[]>([])
 
+  // first time fetch
+  getRoutingMappings()
+    .then((values) => {
+      setData(values.keys)
+      setLoading(false)
+    }).catch((err) => {
+      console.error(err)
+    })
+  
   return (
     <>
       <div class="container mx-auto py-4">
-        <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right">
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right"
+          onclick={async () => {
+            setLoading(true)
+            const keys = await getRoutingMappings()
+            setData(keys.keys)
+            setLoading(false)
+          }}
+        >
           Refresh
         </button>
       </div>
 
       <div class="container mx-auto py-8">
         <hr class="mt-2 mb-4" />
-        {data.loading && <Spinner />}
-        {(!data.loading && !data()) && <h2>No Routing Keys Found</h2>}
+        {loading() && <Spinner />}
+        {!loading() && !data() && <h2>No Routing Keys Found</h2>}
         {data() && (
           <For each={data()}>
-            {(routeMap: RoutingMapping, _) => (
-              <ActionRow name={routeMap.key} url={`/brokers/${routeMap.key}`} />
+            {(key: string, _) => (
+              <ActionRow name={key} url={`/brokers/${key}`} />
             )}
           </For>
         )}
