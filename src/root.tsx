@@ -15,16 +15,14 @@ import {
 import "./root.css";
 import NavBar from "./components/NavBar";
 import Tabs from "./components/Tabs";
-import { MetaProvider } from "@solidjs/meta";
 
 export default function Root() {
   const location = useLocation();
 
   return (
-    
       <Html lang="en">
         <Head>
-          <Title>SolidStart - With TailwindCSS</Title>
+          <Title>Sybline Management UI</Title>
           <Meta charset="utf-8" />
           <Meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
