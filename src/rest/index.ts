@@ -15,6 +15,11 @@ export interface Accounts {
   accounts: string[];
 }
 
+export interface Role {
+    name: string;
+    raw: string;
+}
+
 export async function getRoutingMappings(): Promise<RoutingMapping> {
   if (!import.meta.env.VITE_SYB_ADDRESS) {
     throw new Error("Missing required environment variable: SYB_ADDRESS");
@@ -68,3 +73,26 @@ export async function getAccounts(): Promise<Accounts> {
     throw error;
   }
 }
+
+
+export async function getRoles(user: string): Promise<Role[]> {
+    if (!import.meta.env.VITE_SYB_ADDRESS) {
+      throw new Error("Missing required environment variable: SYB_ADDRESS");
+    }
+
+    if (!user) {
+        throw new Error("Must provide a user with a length > 0");
+      }
+  
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SYB_ADDRESS}/info/accounts/roles/${user}`
+      );
+  
+      return response.data.Roles;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  }
+  

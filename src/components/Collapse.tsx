@@ -5,11 +5,10 @@ import "./collapse.css";
 
 interface props {
   roleName: string;
+  jsonRole: string;
 }
 const Collapse = (prop: props): JSX.Element => {
-  const [isOpen, setIsOpen] = createSignal(false);
-
-  const content = `{ \"role\": \"ROOT\",\n\t\t\"actions\": {\n\t\t\t\"GetMessages\": \"allow:*\",\n\t\t\t\"SubmitMessage\": \"allow:*\",\n\t\t\t\"SubmitBatchedMessages\": \"allow:*\",\n\t\t\t\"CreateQueue\": \"allow\",\n\t\t\t\"ChangePassword\": \"allow\",\n\t\t\t\"Ack\": \"allow:*\",\n\t\t\t\"BatchAck\": \"allow:*\",\n\t\t\t\"DeleteQueue\": \"allow\",\n\t\t\t\"CreateUser\": \"allow\",\n\t\t\t\"DeleteUser\": \"allow\",\n\t\t\t\"CreateRole\": \"allow\",\n\t\t\t\"DeleteRole\": \"allow\",\n\t\t\t\"AssignRole\": \"allow\",\n\t\t\t\"UnassignRole\": \"allow\",\n\t\t\t\"CreateRole\": \"allow\"\n\t\t}}`;
+  const [isOpen, setIsOpen] = createSignal(false);  
 
   return (
     <div class="mx-auto">
@@ -34,7 +33,7 @@ const Collapse = (prop: props): JSX.Element => {
           <pre>
             {/* @ts-ignore */}
             <code
-              innerHTML={Prism.highlight(content, Prism.languages.json, "json")}
+              innerHTML={Prism.highlight(JSON.stringify(JSON.parse(prop.jsonRole),null,2), Prism.languages.json, "json")}
             />
           </pre>
         </div>
