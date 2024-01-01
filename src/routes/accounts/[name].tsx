@@ -10,18 +10,21 @@ export default function Account() {
   const [loading, setLoading] = createSignal<boolean>(true);
   const [data, setData] = createSignal<Role[]>([]);
 
+  const fetchingRoles = () => {
+    getRoles(params.name)
+      .then((values) => {
+        setData(values);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   // first time fetch
-  getRoles(params.name)
-    .then((values) => {
-        console.log("here", values)
-      setData(values);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+  fetchingRoles();
 
   return (
     <>
@@ -32,7 +35,13 @@ export default function Account() {
             <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
               Add Role
             </button>
-            <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+            <button
+              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              onclick={() => {
+                setLoading(true);
+                fetchingRoles();
+              }}
+            >
               Refresh
             </button>
           </div>

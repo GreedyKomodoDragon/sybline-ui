@@ -14,7 +14,7 @@ export default function Tabs() {
             class={(["/", "/brokers"].includes(location.pathname)) ? selectedClassname : unselectedClassname }
             href="/brokers"
           >
-            Broker
+            Brokers
           </a>
         </li>
         <li class="mr-1">
@@ -31,14 +31,6 @@ export default function Tabs() {
             href="/accounts"
           >
             Accounts
-          </a>
-        </li>
-        <li class="mr-1">
-          <a
-            class={location.pathname === "/health" ? selectedClassname : unselectedClassname }
-            href="/health"
-          >
-            Health
           </a>
         </li>
         <li class="mr-1">
