@@ -4,65 +4,130 @@ export default function Queues() {
   const params = useParams<{ name: string }>();
 
   return (
-    <>
-      <header class="container mx-auto px-4">
-        <h1 class="text-3xl font-semibold">{params.name}</h1>
-      </header>
-
-      <section class="py-6">
-        <div class="container mx-auto px-4">
-          <h2 class="text-2xl font-semibold">Stats Section</h2>
+    <div class="flex flex-col h-screen">
+      <main class="flex-1 overflow-y-auto p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-xl font-semibold">Queue</h1>
         </div>
-      </section>
-
-      <section class="py-6">
-        <div class="container mx-auto px-4">
-          <h2 class="text-2xl font-semibold">Get Messages Section</h2>
-          <form
-            id="getMessageForm"
-            class="bg-white p-4 shadow-md rounded-md mt-4 flex items-center space-x-4"
+        <section class="bg-gray-100 p-4 rounded-md mb-4">
+          <h2 class="text-lg font-semibold mb-2">Queue Information</h2>
+          <p class="text-sm text-gray-500 ">
+            Current Queue Size: <span class="font-bold">50</span>
+          </p>
+          <p class="text-sm text-gray-500 ">
+            Maximum Queue Size: <span class="font-bold">100</span>
+          </p>
+          <p class="text-sm text-gray-500 ">
+            Average Wait Time: <span class="font-bold">5 minutes</span>
+          </p>
+        </section>
+        <div class="flex items-center gap-4 mb-4">
+          <label for="messageCount" class="text-sm text-gray-500 ">
+            Get
+          </label>
+          <select
+            id="messageCount"
+            class="rounded-md border-gray-300  bg-white  text-sm text-gray-500 "
           >
-            <label for="messageCount" class="text-gray-600">
-              Number of Messages:
-            </label>
-            <div class="relative inline-block">
-              <input
-                type="number"
-                class="peer block min-h-[auto] w-full rounded border-0 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                value={10}
-              />
-            </div>
-            <button
-              type="submit"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-            >
-              Get Messages
-            </button>
-          </form>
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+          </select>
+          <label for="messageCount" class="text-sm text-gray-500 ">
+            messages
+          </label>
+          <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+            Go
+          </button>
         </div>
-      </section>
-
-      <section class="py-6">
-        <div class="container mx-auto px-4">
-          <h2 class="text-2xl font-semibold">Message List Section</h2>
-          <div class="space-y-4">
-            <div class="mt-4 bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
-              <div>
-                <p class="text-lg font-semibold">Message 1</p>
-                <p>Message details go here...</p>
-              </div>
-              <div>
-                <button class="bg-green-500 text-white px-3 py-1 rounded-l">
-                  ACK
+        <div class="text-sm text-gray-500  mb-6">
+          Total Items: <span class="font-bold">10</span>
+        </div>
+        <div class="grid gap-6">
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm"
+            data-v0-t="card"
+          >
+            <div class="p-6 flex items-center justify-between bg-gray-100 ">
+              <span class="font-medium">Item 1</span>
+              <div class="flex items-center gap-2">
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Acknowledge
                 </button>
-                <button class="bg-red-500 text-white px-3 py-1 rounded-r">
-                  NACK
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Nack
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm"
+            data-v0-t="card"
+          >
+            <div class="p-6 flex items-center justify-between bg-gray-100 ">
+              <span class="font-medium">Item 2</span>
+              <div class="flex items-center gap-2">
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Acknowledge
+                </button>
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Nack
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm"
+            data-v0-t="card"
+          >
+            <div class="p-6 flex items-center justify-between bg-gray-100 ">
+              <span class="font-medium">Item 3</span>
+              <div class="flex items-center gap-2">
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Acknowledge
+                </button>
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Nack
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm"
+            data-v0-t="card"
+          >
+            <div class="p-6 flex items-center justify-between bg-gray-100 ">
+              <span class="font-medium">Item 4</span>
+              <div class="flex items-center gap-2">
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Acknowledge
+                </button>
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Nack
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rounded-lg border bg-card text-card-foreground shadow-sm"
+            data-v0-t="card"
+          >
+            <div class="p-6 flex items-center justify-between bg-gray-100 ">
+              <span class="font-medium">Item 5</span>
+              <div class="flex items-center gap-2">
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Acknowledge
+                </button>
+                <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+                  Nack
                 </button>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </main>
+    </div>
   );
 }

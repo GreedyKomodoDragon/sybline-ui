@@ -16,8 +16,12 @@ export interface Accounts {
 }
 
 export interface Role {
-    name: string;
-    raw: string;
+  name: string;
+  raw: string;
+}
+
+export interface Queue {
+  name: string;
 }
 
 export async function getRoutingMappings(): Promise<RoutingMapping> {
@@ -74,25 +78,40 @@ export async function getAccounts(): Promise<Accounts> {
   }
 }
 
-
 export async function getRoles(user: string): Promise<Role[]> {
-    if (!import.meta.env.VITE_SYB_ADDRESS) {
-      throw new Error("Missing required environment variable: SYB_ADDRESS");
-    }
-
-    if (!user) {
-        throw new Error("Must provide a user with a length > 0");
-      }
-  
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SYB_ADDRESS}/info/accounts/roles/${user}`
-      );
-  
-      return response.data.Roles;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
-    }
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
   }
-  
+
+  if (!user) {
+    throw new Error("Must provide a user with a length > 0");
+  }
+
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SYB_ADDRESS}/info/accounts/roles/${user}`
+    );
+
+    return response.data.Roles;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function getQueues(): Promise<Queue[]> {
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SYB_ADDRESS}/info/queues`
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
