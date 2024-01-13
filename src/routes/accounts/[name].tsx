@@ -1,5 +1,4 @@
 import { For, createSignal } from "solid-js";
-import { useParams } from "solid-start";
 import Collapse from "~/components/Collapse";
 import Spinner from "~/components/Spinner";
 import { Role, getRoles } from "~/rest";

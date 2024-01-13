@@ -1,4 +1,4 @@
-import { clientOnly } from "solid-start/islands";
+import { clientOnly } from "@solidjs/start";
 
 const Diagram = clientOnly(() => import("~/components/diagram"));
 

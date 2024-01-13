@@ -1,5 +1,5 @@
+import { useParams } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
-import { useParams } from "solid-start";
 import ActionRow from "~/components/ActionRow";
 import Spinner from "~/components/Spinner";
 import { getRoutingData } from "~/rest";

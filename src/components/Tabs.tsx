@@ -1,7 +1,6 @@
-import { useLocation } from "solid-start";
+import { useLocation } from "@solidjs/router";
 
 export default function Tabs() {
-
   const location = useLocation();
   const selectedClassname = "bg-white inline-block border-l-4 border-t-4 border-r-4 rounded-t py-2 px-4 text-blue-dark font-semibold";
   const unselectedClassname = "bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"

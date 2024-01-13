@@ -4,18 +4,20 @@ import { getRoutingMappings } from "~/rest";
 import Spinner from "./Spinner";
 
 export default function BrokerTab() {
+
+
   const [loading, setLoading] = createSignal<boolean>(true);
   const [data, setData] = createSignal<string[]>([]);
 
-  // first time fetch
-  getRoutingMappings()
-    .then((values) => {
-      setData(values.keys);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  // // first time fetch
+  // getRoutingMappings()
+  //   .then((values) => {
+  //     setData(values.keys);
+  //     setLoading(false);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useParams } from "solid-start";
+import { useParams } from "@solidjs/router";
 
 export default function Queues() {
   const params = useParams<{ name: string }>();
