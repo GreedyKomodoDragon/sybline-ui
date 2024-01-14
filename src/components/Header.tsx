@@ -5,12 +5,14 @@ import Tabs from "./Tabs";
 export default function Header() {
   const location = useLocation();
 
-
   return (
     <>
-    {location.pathname != "/login" && (
-        <><NavBar /><Tabs /></>
-    )}
+      {location.pathname != "/login" && (
+        <>
+          <NavBar />
+          <Tabs />
+        </>
+      )}
     </>
   );
 }

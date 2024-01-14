@@ -1,9 +1,8 @@
-// import { clientOnly } from "@solidjs/start";
-
+import { clientOnly } from "@solidjs/start";
 import { createSignal } from "solid-js";
 import { getRoutingData } from "~/rest";
 
-// const Diagram = clientOnly(() => import("~/components/diagram"));
+const Diagram = clientOnly(() => import("~/components/diagram"));
 
 export default function Visualiser() {
   const [loading, setLoading] = createSignal<boolean>(true);
@@ -26,7 +25,7 @@ export default function Visualiser() {
           <h1 class="text-5xl font-semibold">Current Architecture</h1>
         </div>
       </header>
-      {/* <Diagram /> */}
+      <Diagram />
     </div>
   );
 }

@@ -128,6 +128,31 @@ export async function getRoles(user: string): Promise<Role[]> {
   }
 }
 
+
+export async function getAllRoles(): Promise<Role[]> {
+  if (typeof document === "undefined") {
+    return [];
+  }
+
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/roles`,
+      {
+        auth: getAuth(),
+      }
+    );
+
+    return response.data.Roles;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
 export async function getQueues(): Promise<Queue[]> {
   if (typeof document === "undefined") {
     return [];

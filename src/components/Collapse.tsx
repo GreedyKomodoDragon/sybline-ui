@@ -1,14 +1,12 @@
 import { JSX, createSignal } from "solid-js";
-import Prism from "prismjs";
-import "prismjs/components/prism-json.js";
-import "./collapse.css";
+import JsonBlock from "./JsonBlock";
 
 interface props {
   roleName: string;
   jsonRole: string;
 }
 const Collapse = (prop: props): JSX.Element => {
-  const [isOpen, setIsOpen] = createSignal(false);  
+  const [isOpen, setIsOpen] = createSignal(false);
 
   return (
     <div class="mx-auto">
@@ -28,16 +26,7 @@ const Collapse = (prop: props): JSX.Element => {
         </svg>
       </button>
 
-      {isOpen() && (
-        <div class="mt-2 bg-white shadow-md rounded-lg p-4">
-          <pre>
-            {/* @ts-ignore */}
-            <code
-              innerHTML={Prism.highlight(JSON.stringify(JSON.parse(prop.jsonRole),null,2), Prism.languages.json, "json")}
-            />
-          </pre>
-        </div>
-      )}
+      {isOpen() && <JsonBlock jsonRole={prop.jsonRole} />}
     </div>
   );
 };
