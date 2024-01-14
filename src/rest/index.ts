@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookieValue } from "~/middleware";
 
 axios.defaults.headers.common["Access-Control-Allow-Origin"] =
   import.meta.env.VITE_SYB_ADDRESS;
@@ -31,7 +32,10 @@ export async function getRoutingMappings(): Promise<RoutingMapping> {
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/info/routing`
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/routing`,
+      {
+        auth: getAuth(),
+      }
     );
     return response.data;
   } catch (error) {
@@ -51,7 +55,10 @@ export async function getRoutingData(routeKey: string): Promise<RoutingData> {
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/info/routing/${routeKey}`
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/routing/${routeKey}`,
+      {
+        auth: getAuth(),
+      }
     );
 
     return response.data;
@@ -62,13 +69,20 @@ export async function getRoutingData(routeKey: string): Promise<RoutingData> {
 }
 
 export async function getAccounts(): Promise<Accounts> {
+  if (typeof document === "undefined") {
+    return { accounts: [] };
+  }
+
   if (!import.meta.env.VITE_SYB_ADDRESS) {
     throw new Error("Missing required environment variable: SYB_ADDRESS");
   }
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/info/accounts`
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/accounts`,
+      {
+        auth: getAuth(),
+      }
     );
 
     return response.data;
@@ -89,7 +103,10 @@ export async function getRoles(user: string): Promise<Role[]> {
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/info/accounts/roles/${user}`
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/accounts/roles/${user}`,
+      {
+        auth: getAuth(),
+      }
     );
 
     return response.data.Roles;
@@ -106,7 +123,10 @@ export async function getQueues(): Promise<Queue[]> {
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/info/queues`
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/queues`,
+      {
+        auth: getAuth(),
+      }
     );
 
     return response.data;
@@ -138,7 +158,7 @@ export async function isLogin(
     return response.status == 200;
   } catch (error) {
     console.error("Error fetching data:", error);
-    throw error;
+    return false;
   }
 }
 
@@ -154,8 +174,8 @@ export async function login(
     const response = await axios.post(
       `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/login`,
       {
-        username: username, 
-        password: password
+        username: username,
+        password: password,
       }
     );
 
@@ -166,3 +186,19 @@ export async function login(
   }
 }
 
+function getAuth(): { username: string; password: string } {
+  const token = getCookieValue(document.cookie, "syb-token");
+  if (!token) {
+    throw "failed to get token";
+  }
+
+  const username = getCookieValue(document.cookie, "syb-username");
+  if (!username) {
+    throw "failed to get username";
+  }
+
+  return {
+    username: username,
+    password: token,
+  };
+}
