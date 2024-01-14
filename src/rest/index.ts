@@ -26,6 +26,10 @@ export interface Queue {
 }
 
 export async function getRoutingMappings(): Promise<RoutingMapping> {
+  if (typeof document === "undefined") {
+    return { keys: [] };
+  }
+
   if (!import.meta.env.VITE_SYB_ADDRESS) {
     throw new Error("Missing required environment variable: SYB_ADDRESS");
   }
@@ -45,6 +49,10 @@ export async function getRoutingMappings(): Promise<RoutingMapping> {
 }
 
 export async function getRoutingData(routeKey: string): Promise<RoutingData> {
+  if (typeof document === "undefined") {
+    return { queues: [] };
+  }
+
   if (!import.meta.env.VITE_SYB_ADDRESS) {
     throw new Error("Missing required environment variable: SYB_ADDRESS");
   }
@@ -93,6 +101,10 @@ export async function getAccounts(): Promise<Accounts> {
 }
 
 export async function getRoles(user: string): Promise<Role[]> {
+  if (typeof document === "undefined") {
+    return [];
+  }
+
   if (!import.meta.env.VITE_SYB_ADDRESS) {
     throw new Error("Missing required environment variable: SYB_ADDRESS");
   }
@@ -117,6 +129,10 @@ export async function getRoles(user: string): Promise<Role[]> {
 }
 
 export async function getQueues(): Promise<Queue[]> {
+  if (typeof document === "undefined") {
+    return [];
+  }
+
   if (!import.meta.env.VITE_SYB_ADDRESS) {
     throw new Error("Missing required environment variable: SYB_ADDRESS");
   }
@@ -136,7 +152,7 @@ export async function getQueues(): Promise<Queue[]> {
   }
 }
 
-export async function isLogin(
+export async function isLogged(
   username: string,
   token: string
 ): Promise<boolean> {

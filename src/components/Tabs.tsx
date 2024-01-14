@@ -1,4 +1,4 @@
-import { useLocation } from "@solidjs/router";
+import { A, useLocation } from "@solidjs/router";
 
 export default function Tabs() {
   const location = useLocation();
@@ -33,12 +33,12 @@ export default function Tabs() {
           </a>
         </li>
         <li class="mr-1">
-          <a
-            class={location.pathname === "/visualiser" ? selectedClassname : unselectedClassname }
-            href="/visualiser"
+          <A
+            class={location.pathname === "/visual" ? selectedClassname : unselectedClassname }
+            href="/visual"
           >
             Visualiser
-          </a>
+          </A>
         </li>
       </ul>
     </main>

@@ -1,5 +1,5 @@
 import { sendRedirect, createMiddleware } from "@solidjs/start/server";
-import { isLogin } from "./rest";
+import { isLogged } from "./rest";
 const unProtectedPaths = ["/login"];
 
 export function getCookieValue(cookieString: string, cookieName: string): string | null {
@@ -29,27 +29,23 @@ export default createMiddleware({
 
       const cookies = event.request.headers.get("cookie")
       if (!cookies) {
-        console.log("no cookies:", cookies)
         return sendRedirect(event, "/login");
       }
 
       const token = getCookieValue(cookies, "syb-token");
       if (!token) {
-        console.log("no syb-token")
         return sendRedirect(event, "/login");
       }
 
       const username = getCookieValue(cookies, "syb-username");
       if (!username) {
-        console.log("no username")
         return sendRedirect(event, "/login");
       }
 
-      if (await isLogin(username, token)) {
+      if (await isLogged(username, token)) {
         return;
       }
 
-      console.log("cannot login")
       return sendRedirect(event, "/login");
     },
   ],
