@@ -1,3 +1,4 @@
+import { useParams } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
 import Collapse from "~/components/Collapse";
 import Spinner from "~/components/Spinner";
