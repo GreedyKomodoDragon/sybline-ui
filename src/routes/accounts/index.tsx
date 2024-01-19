@@ -1,18 +1,16 @@
 import { For, createSignal } from "solid-js";
-import ActionRow from "./ActionRow";
-import { getRoutingMappings } from "~/rest";
-import Spinner from "./Spinner";
+import ActionRow from "~/components/ActionRow";
+import Spinner from "~/components/Spinner";
+import { getAccounts, getRoutingMappings } from "~/rest";
 
-export default function BrokerTab() {
-
-
+export default function AccountsTab() {
   const [loading, setLoading] = createSignal<boolean>(true);
   const [data, setData] = createSignal<string[]>([]);
 
   // first time fetch
-  getRoutingMappings()
+  getAccounts()
     .then((values) => {
-      setData(values.keys);
+      setData(values.accounts);
       setLoading(false);
     })
     .catch((err) => {
@@ -21,19 +19,21 @@ export default function BrokerTab() {
 
   return (
     <>
-      <div class="container mx-auto py-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="my-4 text-5xl font-semibold">Accounts</h1>
         <button
           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right"
           onclick={async () => {
             setLoading(true);
-            const keys = await getRoutingMappings();
-            setData(keys.keys);
+            const { accounts } = await getAccounts();
+            setData(accounts);
             setLoading(false);
           }}
         >
           Refresh
         </button>
       </div>
+      
 
       <div class="container mx-auto py-8">
         <hr class="mt-2 mb-4" />
@@ -42,11 +42,11 @@ export default function BrokerTab() {
             <Spinner />
           </div>
         )}
-        {!loading() && !data() && <h2>No Routing Keys Found</h2>}
+        {!loading() && !data() && <h2>No Accounts Found</h2>}
         {data() && (
           <For each={data()}>
             {(key: string, _) => (
-              <ActionRow name={key} url={`/brokers/${key}`} />
+              <ActionRow name={key} url={`/accounts/${key}`} />
             )}
           </For>
         )}

@@ -1,7 +1,6 @@
-import { useLocation } from "solid-start";
+import { A, useLocation } from "@solidjs/router";
 
 export default function Tabs() {
-
   const location = useLocation();
   const selectedClassname = "bg-white inline-block border-l-4 border-t-4 border-r-4 rounded-t py-2 px-4 text-blue-dark font-semibold";
   const unselectedClassname = "bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold"
@@ -14,7 +13,7 @@ export default function Tabs() {
             class={(["/", "/brokers"].includes(location.pathname)) ? selectedClassname : unselectedClassname }
             href="/brokers"
           >
-            Broker
+            Brokers
           </a>
         </li>
         <li class="mr-1">
@@ -34,20 +33,12 @@ export default function Tabs() {
           </a>
         </li>
         <li class="mr-1">
-          <a
-            class={location.pathname === "/health" ? selectedClassname : unselectedClassname }
-            href="/health"
-          >
-            Health
-          </a>
-        </li>
-        <li class="mr-1">
-          <a
-            class={location.pathname === "/visualiser" ? selectedClassname : unselectedClassname }
-            href="/visualiser"
+          <A
+            class={location.pathname === "/visual" ? selectedClassname : unselectedClassname }
+            href="/visual"
           >
             Visualiser
-          </a>
+          </A>
         </li>
       </ul>
     </main>
