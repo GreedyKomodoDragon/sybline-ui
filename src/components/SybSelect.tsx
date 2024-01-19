@@ -3,6 +3,7 @@ import { For, JSX } from "solid-js";
 interface SybSelectProps {
   options?: string[];
   onChange?: JSX.ChangeEventHandlerUnion<HTMLSelectElement, Event> 
+  selected?: string;
 }
 
 export default function SybSelect(props: SybSelectProps) {
@@ -12,10 +13,10 @@ export default function SybSelect(props: SybSelectProps) {
         id="select"
         name="select"
         class="block w-full py-2 pl-3 pr-10 text-base border-2 border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-        onChange={props.onChange}   
+        onChange={props.onChange}  
       >
         <For each={props.options}>
-          {(key: string, _) => <option value={key}>{key}</option>}
+          {(key: string, _) => <option selected={props.selected == key} value={key}>{key}</option>}
         </For>
       </select>
       <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
