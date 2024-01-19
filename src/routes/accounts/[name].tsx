@@ -41,7 +41,7 @@ export default function Account() {
             </button>
             <button
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-              onclick={() => navigate(`/role/assign?name=${params.name}`)}
+              onclick={() => navigate(`/role/unassign?name=${params.name}`)}
             >
               Remove Role
             </button>

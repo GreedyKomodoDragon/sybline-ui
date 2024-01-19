@@ -26,7 +26,7 @@ export default function Add() {
 
   const [selectedRole, setSelectRole] = createSignal<string>("");
   const [selectedAccount, setSelectedAccount] = createSignal<string>(
-    searchParams.name || ""
+    searchParams.name ?? ""
   );
 
   const fetchingRoles = () => {

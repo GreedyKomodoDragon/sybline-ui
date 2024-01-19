@@ -96,7 +96,8 @@ export async function getAccounts(): Promise<Accounts> {
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
-    throw error;
+    // throw error;
+    return { accounts: [] };
   }
 }
 
@@ -190,6 +191,30 @@ export async function assignRole(role: string, username: string) {
       `${
         import.meta.env.VITE_SYB_ADDRESS
       }/api/v1/accounts/roles/${username}/${role}`, {},
+      {
+        auth: getAuth()
+      }
+    );
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function unassignRole(role: string, username: string) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  try {
+    await axios.delete(
+      `${
+        import.meta.env.VITE_SYB_ADDRESS
+      }/api/v1/accounts/roles/${username}/${role}`,
       {
         auth: getAuth()
       }
