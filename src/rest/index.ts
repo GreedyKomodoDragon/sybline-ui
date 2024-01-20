@@ -190,9 +190,10 @@ export async function assignRole(role: string, username: string) {
     await axios.put(
       `${
         import.meta.env.VITE_SYB_ADDRESS
-      }/api/v1/accounts/roles/${username}/${role}`, {},
+      }/api/v1/accounts/roles/${username}/${role}`,
+      {},
       {
-        auth: getAuth()
+        auth: getAuth(),
       }
     );
   } catch (error) {
@@ -216,7 +217,7 @@ export async function unassignRole(role: string, username: string) {
         import.meta.env.VITE_SYB_ADDRESS
       }/api/v1/accounts/roles/${username}/${role}`,
       {
-        auth: getAuth()
+        auth: getAuth(),
       }
     );
   } catch (error) {
@@ -269,6 +270,28 @@ export async function login(
     );
 
     return response.data.token;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function createAccount(username: string, password: string) {
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  try {
+    await axios.post(
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/accounts`,
+      {
+        username: username,
+        password: password,
+      },
+      {
+        auth: getAuth(),
+      }
+    );
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;

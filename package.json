@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@greedykomodo/solid-flow": "^1.0.0",
+    "@modular-forms/solid": "^0.20.0",
     "@solidjs-use/integrations": "^2.3.0",
     "@solidjs/router": "^0.10.9",
     "@solidjs/start": "^0.4.9",
