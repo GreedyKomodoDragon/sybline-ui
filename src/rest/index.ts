@@ -298,7 +298,7 @@ export async function createAccount(username: string, password: string) {
   }
 }
 
-function getAuth(): { username: string; password: string } {
+export function getAuth(): { username: string; password: string } {
   const token = getCookieValue(document.cookie, "syb-token");
   if (!token) {
     throw "failed to get token";
