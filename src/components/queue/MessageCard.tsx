@@ -1,6 +1,12 @@
 import { createSignal } from "solid-js";
 
-export default function MessageCard() {
+
+type MessageCardProps = {
+  id: string;
+  data: string;
+}
+
+export default function MessageCard(props: MessageCardProps) {
   const [isOpen, setIsOpen] = createSignal(false);
   return (
     <div
@@ -8,7 +14,7 @@ export default function MessageCard() {
       data-v0-t="card"
     >
       <div class="p-4 flex items-center justify-between bg-gray-100 ">
-        <span class="font-medium">Id: 30b25f98-76fe-4ab0-bf96-649b6fc1b229</span>
+        <span class="font-medium">Id: {props.id}</span>
         <div class="flex items-center gap-2">
           <button class="bg-green-500 text-white px-4 py-2 rounded-md">
             Ack
@@ -34,7 +40,7 @@ export default function MessageCard() {
       </div>
       {isOpen() && (
         <div class="p-6 flex">
-          Data: Message
+          Data: {props.data}
         </div>
       )}
     </div>

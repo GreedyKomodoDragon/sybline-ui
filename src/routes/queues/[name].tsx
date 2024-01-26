@@ -1,13 +1,16 @@
 import { useParams } from "@solidjs/router";
-import { createSignal } from "solid-js";
+import { For, createSignal } from "solid-js";
+import ErrorAlert from "~/components/ErrorAlert";
 import MessageCard from "~/components/queue/MessageCard";
 import QueueInfo from "~/components/queue/QueueInfo";
-import { Message } from "~/rest/queue";
+import { Message, getMessages } from "~/rest/queue";
 
 export default function Queues() {
   const params = useParams<{ name: string }>();
 
-  const [messages, setMessages] = createSignal<Message[]>();
+  const [messages, setMessages] = createSignal<Message[]>([]);
+  const [failed, setFailed] = createSignal<boolean>(false);
+  const [amount, setAmount] = createSignal<number>(0);
 
   return (
     <div class="container mx-auto flex justify-between items-center">
@@ -24,20 +27,41 @@ export default function Queues() {
             id="messageCount"
             class="rounded-md border-gray-300  bg-white w-20 p-1  text-sm text-gray-500 border-2"
             type="number"
+            onChange={(e) => setAmount(Number(e.currentTarget.value))}
           />
           <label for="messageCount" class="text-sm text-gray-500 ">
             messages
           </label>
-          <button class="bg-green-500 text-white px-4 py-2 rounded-md">
+          <button
+            class="bg-green-500 text-white px-4 py-2 rounded-md"
+            onClick={() => {
+              if (amount() < 0) {
+                return;
+              }
+
+              getMessages(params.name, amount())
+                .then((data) => setMessages(data))
+                .catch(() => {
+                  setFailed(true);
+                });
+            }}
+          >
             Go
           </button>
         </div>
-        <div class="text-sm text-gray-500  mb-6">
-          Total Items: <span class="font-bold">10</span>
-        </div>
+        {messages().length > 0 && (
+          <div class="text-sm text-gray-500  mb-6">
+            Total Items: <span class="font-bold">{messages().length}</span>
+          </div>
+        )}
+
+        {failed() && <ErrorAlert />}
         <div class="grid gap-4">
-          <MessageCard />
-          <MessageCard />
+          {messages() && (
+            <For each={messages()}>
+              {(msg: Message, _) => <MessageCard id={msg.id} data={msg.data} />}
+            </For>
+          )}
         </div>
       </main>
     </div>
