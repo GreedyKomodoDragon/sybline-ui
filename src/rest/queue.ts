@@ -32,15 +32,64 @@ export async function getMessages(
 
     const nonBase64: Message[] = [];
     for (const element of response.data) {
-        nonBase64.push({
-            id: element.id,
-            data: atob(element.data),
-        })
+      nonBase64.push({
+        id: element.id,
+        data: atob(element.data),
+      });
     }
 
     return nonBase64;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function ackMessage(id: string, queue: string) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  try {
+    await axios.put(
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/ack`,
+      {
+        id: id,
+        queue: queue,
+      },
+      {
+        auth: getAuth(),
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function nackMessage(id: string, queue: string) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  try {
+    await axios.put(
+      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/nack`,
+      {
+        id: id,
+        queue: queue,
+      },
+      {
+        auth: getAuth(),
+      }
+    );
+  } catch (error) {
     throw error;
   }
 }

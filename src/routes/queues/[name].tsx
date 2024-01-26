@@ -59,7 +59,16 @@ export default function Queues() {
         <div class="grid gap-4">
           {messages() && (
             <For each={messages()}>
-              {(msg: Message, _) => <MessageCard id={msg.id} data={msg.data} />}
+              {(msg: Message, _) => (
+                <MessageCard
+                  id={msg.id}
+                  data={msg.data}
+                  queue={params.name}
+                  onSuccess={() => {
+                    setMessages(messages().filter(mg => mg.id !== msg.id))
+                  }}
+                />
+              )}
             </For>
           )}
         </div>
