@@ -1,6 +1,9 @@
-import { Maybe, createForm, custom, required } from "@modular-forms/solid";
+import { createForm, required } from "@modular-forms/solid";
 import { createSignal } from "solid-js";
+import ErrorAlert from "~/components/ErrorAlert";
+import SuccessAlert from "~/components/SuccessAlert";
 import SybSwitch from "~/components/inputs/Switch";
+import { createQueue } from "~/rest/queue";
 import { minNumber } from "~/utils/modular";
 
 type CreateRouteForm = {
@@ -15,6 +18,9 @@ export default function Route() {
 
   const [checkedDLQ, setCheckedDLQ] = createSignal<boolean>(false);
 
+  const [success, setSuccess] = createSignal<boolean>(false);
+  const [failed, setFailed] = createSignal<boolean>(false);
+
   return (
     <>
       <header class="py-4">
@@ -26,6 +32,16 @@ export default function Route() {
       <section class="py-2">
         <div class="container mx-auto">
           <div class="space-y-8">
+            {failed() && (
+              <div class="mb-2">
+                <ErrorAlert />
+              </div>
+            )}
+            {success() && (
+              <div class="mb-2">
+                <SuccessAlert />
+              </div>
+            )}
             <div class="space-y-2">
               <div class="flex items-center space-x-2">
                 <svg
@@ -50,7 +66,24 @@ export default function Route() {
                 </p>
               </div>
             </div>
-            <Form class="mt-4" onSubmit={() => {}}>
+            <Form
+              class="mt-4"
+              onSubmit={(e) => {
+                createQueue(
+                  e.brokerName,
+                  e.queueName,
+                  e.queueSize,
+                  e.retryLimit,
+                  checkedDLQ()
+                )
+                  .then(() => {
+                    setSuccess(true);
+                  })
+                  .catch(() => {
+                    setFailed(true);
+                  });
+              }}
+            >
               <div class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                   <div class="space-y-2">
@@ -120,7 +153,7 @@ export default function Route() {
                       name="retryLimit"
                       validate={[
                         required("Retry Limit must be provided"),
-                        minNumber(0, "Retry Limit must be at least zero")
+                        minNumber(0, "Retry Limit must be at least zero"),
                       ]}
                       type="number"
                     >
@@ -152,7 +185,7 @@ export default function Route() {
                       name="queueSize"
                       validate={[
                         required("Queue Size must be provided"),
-                        minNumber(1, "Queue Size must be at one in size")
+                        minNumber(1, "Queue Size must be at one in size"),
                       ]}
                       type="number"
                     >

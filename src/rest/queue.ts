@@ -93,3 +93,29 @@ export async function nackMessage(id: string, queue: string) {
     throw error;
   }
 }
+
+export async function createQueue(
+  routingKey: string,
+  name: string,
+  size: number,
+  retryLimit: number,
+  hasDLQueue: boolean
+) {
+  if (!import.meta.env.VITE_SYB_ADDRESS) {
+    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  }
+
+  await axios.post(
+    `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/create`,
+    {
+      routingKey,
+      name,
+      size,
+      retryLimit,
+      hasDLQueue,
+    },
+    {
+      auth: getAuth(),
+    }
+  );
+}
