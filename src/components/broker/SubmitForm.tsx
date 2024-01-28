@@ -14,7 +14,6 @@ interface SubmitFormProps {
 
 export default function SubmitForm(props: SubmitFormProps) {
   const [_, { Form, Field }] = createForm<SubmitForm>();
-  const [msg, setMsg] = createSignal<string>("");
 
   const [success, setSuccess] = createSignal<boolean>(false);
   const [failed, setFailed] = createSignal<boolean>(false);
@@ -22,8 +21,8 @@ export default function SubmitForm(props: SubmitFormProps) {
   return (
     <Form
       class="mt-4"
-      onSubmit={() => {
-        SubmitMessage(props.routingKey, msg())
+      onSubmit={(e) => {
+        SubmitMessage(props.routingKey, e.message)
           .then(() => {
             setSuccess(true);
           })
@@ -62,7 +61,6 @@ export default function SubmitForm(props: SubmitFormProps) {
                 rows="5"
                 value={field.value}
                 placeholder="Enter your message"
-                onChange={(e) => setMsg(e.currentTarget.value)}
               ></textarea>
               {field.error && <div class="text-red-600">{field.error}</div>}
             </>

@@ -15,28 +15,29 @@ export default function CreateAccount() {
 
   const [accountCreated, setAccountCreated] = createSignal<boolean>(false);
   const [failed, setFailed] = createSignal<boolean>(false);
+  const [match, setMatch] = createSignal<string>("");
 
   // const [loading, setLoading] = createSignal();
-  const [username, setUsername] = createSignal<string>("");
-  const [password, setPassword] = createSignal<string>("");
-  const [confirmPassword, setConfirmationPassword] = createSignal<string>("");
 
   return (
     <div class="flex flex-col items-center justify-center">
       {failed() && <ErrorAlert />}
-      {accountCreated() && <SuccessAlert/>}
+      {accountCreated() && <SuccessAlert />}
       <div class="w-full max-w-lg p-6">
         <h2 class="text-5xl mb-5 font-bold text-center text-gray-900">
           Create a New Account
         </h2>
         <Form
-          onSubmit={() => {
+          onSubmit={(e) => {
             setFailed(false);
-            if (password() != confirmPassword()) {
+            if (e.password != e.confirmPassword) {
+              setMatch("Passwords must match");
               return;
             }
 
-            createAccount(username(), password())
+            setMatch("");
+
+            createAccount(e.username, e.password)
               .then(() => {
                 setAccountCreated(true);
               })
@@ -64,7 +65,6 @@ export default function CreateAccount() {
                       class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full"
                       id="username"
                       type="text"
-                      onChange={(e) => setUsername(e.currentTarget.value)}
                       value={field.value}
                     />
                     {field.error && (
@@ -92,7 +92,6 @@ export default function CreateAccount() {
                       class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full"
                       id="password"
                       type="password"
-                      onChange={(e) => setPassword(e.currentTarget.value)}
                       value={field.value}
                     />
                     {field.error && (
@@ -121,16 +120,11 @@ export default function CreateAccount() {
                       id="confirm-password"
                       type="password"
                       value={field.value}
-                      onChange={(e) =>
-                        setConfirmationPassword(e.currentTarget.value)
-                      }
                     />
                     {field.error && (
                       <div class="text-red-600">{field.error}</div>
                     )}
-                    {password() != confirmPassword() && (
-                      <div class="text-red-600">Passwords must match</div>
-                    )}
+                    {match() && <div class="text-red-600">{match()}</div>}
                   </>
                 )}
               </Field>
