@@ -8,13 +8,21 @@ interface props {
 }
 
 const JsonBlock = (prop: props): JSX.Element => {
+  const getJson = (raw: string) => {
+    try {
+      return JSON.stringify(JSON.parse(raw), null, 2);
+    } catch {
+      return "{}";
+    }
+  };
+
   return (
     <div class="mt-2 bg-white shadow-md rounded-lg p-4">
       <pre>
         {/* @ts-ignore */}
         <code
           innerHTML={Prism.highlight(
-            JSON.stringify(JSON.parse(prop.jsonRole), null, 2),
+            getJson(prop.jsonRole),
             Prism.languages.json,
             "json"
           )}
