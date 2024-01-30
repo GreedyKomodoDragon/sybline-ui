@@ -195,12 +195,13 @@ export async function isLogged(
   username: string,
   token: string
 ): Promise<boolean> {
-  if (!process.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  let url = process.env.SYB_ADDRESS || "";
+  if (!url) {
+    url = await getAnyURL();
   }
 
   const response = await axios.get(
-    `${process.env.VITE_SYB_ADDRESS}/api/v1/login`,
+    `${url}/api/v1/login`,
     {
       auth: {
         username: username,
@@ -296,3 +297,19 @@ export async function getLeaderURL(): Promise<string> {
 
   throw Error("cannot find leader");
 }
+
+export async function getAnyURL(): Promise<string> {
+  if (leaderUrl !== "") {
+    return leaderUrl;
+  }
+
+  const f = await fetch("/config/config.json");
+  const data = await f.json();
+
+  for (const url of data.urls) {
+    return url
+  }
+
+  throw Error("cannot find leader");
+}
+
