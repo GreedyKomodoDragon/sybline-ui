@@ -28,6 +28,14 @@ export default function AccountsTab() {
           <button
             class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right"
             onclick={async () => {
+              navigate("/create/role");
+            }}
+          >
+            Create new Role
+          </button>
+          <button
+            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right"
+            onclick={async () => {
               navigate("/create/account");
             }}
           >
