@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAuth } from ".";
+import { getAuth, getLeaderURL } from ".";
 
 export type Message = {
   id: string;
@@ -14,21 +14,16 @@ export async function getMessages(
     return [];
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/fetch`,
-      {
-        auth: getAuth(),
-        params: {
-          queue: name,
-          amount: amount,
-        },
-      }
-    );
+    const response = await axios.get(`${leaderUrl}/api/v1/queue/fetch`, {
+      auth: getAuth(),
+      params: {
+        queue: name,
+        amount: amount,
+      },
+    });
 
     const nonBase64: Message[] = [];
     for (const element of response.data) {
@@ -49,13 +44,11 @@ export async function ackMessage(id: string, queue: string) {
     return;
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
     await axios.put(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/ack`,
+      `${leaderUrl}/api/v1/queue/ack`,
       {
         id: id,
         queue: queue,
@@ -74,13 +67,11 @@ export async function nackMessage(id: string, queue: string) {
     return;
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
     await axios.put(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/nack`,
+      `${leaderUrl}/api/v1/queue/nack`,
       {
         id: id,
         queue: queue,
@@ -101,12 +92,10 @@ export async function createQueue(
   retryLimit: number,
   hasDLQueue: boolean
 ) {
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   await axios.post(
-    `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/queue/create`,
+    `${leaderUrl}/api/v1/queue/create`,
     {
       routingKey,
       name,
