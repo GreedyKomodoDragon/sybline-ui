@@ -200,15 +200,12 @@ export async function isLogged(
     url = await getAnyURL();
   }
 
-  const response = await axios.get(
-    `${url}/api/v1/login`,
-    {
-      auth: {
-        username: username,
-        password: token,
-      },
-    }
-  );
+  const response = await axios.get(`${url}/api/v1/login`, {
+    auth: {
+      username: username,
+      password: token,
+    },
+  });
 
   return response.status == 200;
 }
@@ -230,6 +227,18 @@ export async function login(
     console.error("Error fetching data:", error);
     throw error;
   }
+}
+
+export async function logout() {
+  const leaderUrl = await getLeaderURL();
+
+  await axios.post(
+    `${leaderUrl}/api/v1/logout`,
+    {},
+    {
+      auth: getAuth(),
+    }
+  );
 }
 
 export async function createAccount(username: string, password: string) {
@@ -307,9 +316,8 @@ export async function getAnyURL(): Promise<string> {
   const data = await f.json();
 
   for (const url of data.urls) {
-    return url
+    return url;
   }
 
   throw Error("cannot find leader");
 }
-

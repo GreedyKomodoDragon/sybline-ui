@@ -2,10 +2,10 @@ import { For, createSignal } from "solid-js";
 import ActionRow from "./ActionRow";
 import { getRoutingMappings } from "~/rest";
 import Spinner from "./Spinner";
+import { useNavigate } from "@solidjs/router";
 
 export default function BrokerTab() {
-
-
+  const navigate = useNavigate();
   const [loading, setLoading] = createSignal<boolean>(true);
   const [data, setData] = createSignal<string[]>([]);
 
@@ -33,6 +33,14 @@ export default function BrokerTab() {
         >
           Refresh
         </button>
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md float-right mr-1"
+          onclick={async () => {
+            navigate("/create/route");
+          }}
+        >
+          Create New Route
+        </button>
       </div>
 
       <div class="container mx-auto py-8">
@@ -42,7 +50,11 @@ export default function BrokerTab() {
             <Spinner />
           </div>
         )}
-        {!loading() && !data() && <h2>No Routing Keys Found</h2>}
+        {!loading() && data().length == 0 && (
+          <div class="flex items-center justify-center">
+            <h2 class="text-3xl mt-20">No Routing Keys Found</h2>
+          </div>
+        )}
         {data() && (
           <For each={data()}>
             {(key: string, _) => (
@@ -50,14 +62,6 @@ export default function BrokerTab() {
             )}
           </For>
         )}
-      </div>
-      <div class="flex justify-center mt-4 mb-8">
-        <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full mr-2">
-          1
-        </button>
-        <button class="bg-gray-300 hover:bg-gray-400 text-gray-600 font-semibold py-2 px-4 rounded-full ml-2">
-          2
-        </button>
       </div>
     </>
   );

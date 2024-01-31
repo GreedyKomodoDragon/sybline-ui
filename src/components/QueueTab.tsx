@@ -16,6 +16,7 @@ export default function QueueTab() {
     .catch((err) => {
       console.error(err);
     });
+
   return (
     <>
       <div class="container mx-auto py-4">
@@ -38,7 +39,11 @@ export default function QueueTab() {
             <Spinner />
           </div>
         )}
-        {!loading() && !data() && <h2>No Routing Keys Found</h2>}
+        {!loading() && data().length == 0 && (
+          <div class="flex items-center justify-center">
+            <h2 class="text-3xl mt-20">No Queues Found</h2>
+          </div>
+        )}
         {data() && (
           <For each={data()}>
             {(que, _) => (
@@ -46,14 +51,6 @@ export default function QueueTab() {
             )}
           </For>
         )}
-      </div>
-      <div class="flex justify-center mt-4 mb-8">
-        <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full mr-2">
-          1
-        </button>
-        <button class="bg-gray-300 hover:bg-gray-400 text-gray-600 font-semibold py-2 px-4 rounded-full ml-2">
-          2
-        </button>
       </div>
     </>
   );
