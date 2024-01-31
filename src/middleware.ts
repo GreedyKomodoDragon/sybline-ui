@@ -2,18 +2,21 @@ import { sendRedirect, createMiddleware } from "@solidjs/start/server";
 import { isLogged } from "./rest";
 const unProtectedPaths = ["/login"];
 
-export function getCookieValue(cookieString: string, cookieName: string): string | null {
-    const cookies = cookieString.split(';').map(cookie => cookie.trim());
-    
-    for (const cookie of cookies) {
-      const [name, value] = cookie.split('=');
-      if (name === cookieName) {
-        return decodeURIComponent(value);
-      }
+export function getCookieValue(
+  cookieString: string,
+  cookieName: string
+): string | null {
+  const cookies = cookieString.split(";").map((cookie) => cookie.trim());
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.split("=");
+    if (name === cookieName) {
+      return decodeURIComponent(value);
     }
-  
-    return null;
   }
+
+  return null;
+}
 
 export default createMiddleware({
   onRequest: [
@@ -27,7 +30,7 @@ export default createMiddleware({
         return;
       }
 
-      const cookies = event.request.headers.get("cookie")
+      const cookies = event.request.headers.get("cookie");
       if (!cookies) {
         return sendRedirect(event, "/login");
       }
@@ -42,8 +45,12 @@ export default createMiddleware({
         return sendRedirect(event, "/login");
       }
 
-      if (await isLogged(username, token)) {
-        return;
+      try {
+        if (await isLogged(username, token)) {
+          return;
+        }
+      } catch (error) {
+        return sendRedirect(event, "/login");
       }
 
       return sendRedirect(event, "/login");

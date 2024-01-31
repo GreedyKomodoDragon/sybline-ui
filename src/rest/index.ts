@@ -1,9 +1,6 @@
 import axios from "axios";
 import { getCookieValue } from "~/middleware";
 
-axios.defaults.headers.common["Access-Control-Allow-Origin"] =
-  import.meta.env.VITE_SYB_ADDRESS;
-
 export interface RoutingMapping {
   keys: string[];
 }
@@ -30,17 +27,12 @@ export async function getRoutingMappings(): Promise<RoutingMapping> {
     return { keys: [] };
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/routing`,
-      {
-        auth: getAuth(),
-      }
-    );
+    const response = await axios.get(`${leaderUrl}/api/v1/info/routing`, {
+      auth: getAuth(),
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -53,9 +45,7 @@ export async function getRoutingData(routeKey: string): Promise<RoutingData> {
     return { queues: [] };
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   if (!routeKey) {
     throw new Error("Must provide a routeKey with a length > 0");
@@ -63,7 +53,7 @@ export async function getRoutingData(routeKey: string): Promise<RoutingData> {
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/routing/${routeKey}`,
+      `${leaderUrl}/api/v1/info/routing/${routeKey}`,
       {
         auth: getAuth(),
       }
@@ -81,17 +71,12 @@ export async function getAccounts(): Promise<Accounts> {
     return { accounts: [] };
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/accounts`,
-      {
-        auth: getAuth(),
-      }
-    );
+    const response = await axios.get(`${leaderUrl}/api/v1/info/accounts`, {
+      auth: getAuth(),
+    });
 
     return response.data;
   } catch (error) {
@@ -106,9 +91,7 @@ export async function getRoles(user: string): Promise<Role[]> {
     return [];
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   if (!user) {
     throw new Error("Must provide a user with a length > 0");
@@ -116,7 +99,7 @@ export async function getRoles(user: string): Promise<Role[]> {
 
   try {
     const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/accounts/roles/${user}`,
+      `${leaderUrl}/api/v1/info/accounts/roles/${user}`,
       {
         auth: getAuth(),
       }
@@ -134,17 +117,12 @@ export async function getAllRoles(): Promise<Role[]> {
     return [];
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/roles`,
-      {
-        auth: getAuth(),
-      }
-    );
+    const response = await axios.get(`${leaderUrl}/api/v1/info/roles`, {
+      auth: getAuth(),
+    });
 
     return response.data.Roles;
   } catch (error) {
@@ -158,17 +136,12 @@ export async function getQueues(): Promise<Queue[]> {
     return [];
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/info/queues`,
-      {
-        auth: getAuth(),
-      }
-    );
+    const response = await axios.get(`${leaderUrl}/api/v1/info/queues`, {
+      auth: getAuth(),
+    });
 
     return response.data;
   } catch (error) {
@@ -182,15 +155,11 @@ export async function assignRole(role: string, username: string) {
     return;
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
     await axios.put(
-      `${
-        import.meta.env.VITE_SYB_ADDRESS
-      }/api/v1/accounts/roles/${username}/${role}`,
+      `${leaderUrl}/api/v1/accounts/roles/${username}/${role}`,
       {},
       {
         auth: getAuth(),
@@ -207,15 +176,11 @@ export async function unassignRole(role: string, username: string) {
     return;
   }
 
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
     await axios.delete(
-      `${
-        import.meta.env.VITE_SYB_ADDRESS
-      }/api/v1/accounts/roles/${username}/${role}`,
+      `${leaderUrl}/api/v1/accounts/roles/${username}/${role}`,
       {
         auth: getAuth(),
       }
@@ -230,44 +195,35 @@ export async function isLogged(
   username: string,
   token: string
 ): Promise<boolean> {
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
+  let url = process.env.SYB_ADDRESS || "";
+  if (!url) {
+    url = await getAnyURL();
   }
 
-  try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/login`,
-      {
-        auth: {
-          username: username,
-          password: token,
-        },
-      }
-    );
+  const response = await axios.get(
+    `${url}/api/v1/login`,
+    {
+      auth: {
+        username: username,
+        password: token,
+      },
+    }
+  );
 
-    return response.status == 200;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return false;
-  }
+  return response.status == 200;
 }
 
 export async function login(
   username: string,
   password: string
 ): Promise<string> {
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
-    const response = await axios.post(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/login`,
-      {
-        username: username,
-        password: password,
-      }
-    );
+    const response = await axios.post(`${leaderUrl}/api/v1/login`, {
+      username: username,
+      password: password,
+    });
 
     return response.data.token;
   } catch (error) {
@@ -277,13 +233,11 @@ export async function login(
 }
 
 export async function createAccount(username: string, password: string) {
-  if (!import.meta.env.VITE_SYB_ADDRESS) {
-    throw new Error("Missing required environment variable: SYB_ADDRESS");
-  }
+  const leaderUrl = await getLeaderURL();
 
   try {
     await axios.post(
-      `${import.meta.env.VITE_SYB_ADDRESS}/api/v1/accounts`,
+      `${leaderUrl}/api/v1/accounts`,
       {
         username: username,
         password: password,
@@ -314,3 +268,48 @@ export function getAuth(): { username: string; password: string } {
     password: token,
   };
 }
+
+let leaderUrl = "";
+
+export async function isLeader(url: string): Promise<boolean> {
+  const response = await axios.get(`${url}/api/v1/info/isLeader`, {
+    auth: getAuth(),
+  });
+
+  return response.data.isLeader === true;
+}
+
+export async function getLeaderURL(): Promise<string> {
+  if (leaderUrl !== "") {
+    return leaderUrl;
+  }
+
+  const f = await fetch("/config/config.json");
+  const data = await f.json();
+
+  for (const url of data.urls) {
+    const leaderFound = await isLeader(url);
+    if (leaderFound) {
+      leaderUrl = url;
+      return url;
+    }
+  }
+
+  throw Error("cannot find leader");
+}
+
+export async function getAnyURL(): Promise<string> {
+  if (leaderUrl !== "") {
+    return leaderUrl;
+  }
+
+  const f = await fetch("/config/config.json");
+  const data = await f.json();
+
+  for (const url of data.urls) {
+    return url
+  }
+
+  throw Error("cannot find leader");
+}
+
