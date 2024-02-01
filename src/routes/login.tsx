@@ -1,26 +1,38 @@
+import { SubmitHandler, createForm, required } from "@modular-forms/solid";
 import { useCookies } from "@solidjs-use/integrations/useCookies";
 import { useNavigate } from "@solidjs/router";
 import { createSignal } from "solid-js";
 import { login } from "~/rest";
 
+type LoginForm = {
+  username: string;
+  password: string;
+};
+
 export default function Login() {
+  const [_, { Form, Field }] = createForm<LoginForm>();
+  const [failed, setFailed] = createSignal<boolean>(false);
+
   const cookies = useCookies(["token", "username"]);
-  const navigate = useNavigate()
-  const [username, setUsername] = createSignal("");
-  const [password, setPassword] = createSignal("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    // Do something with username and password, e.g., send them to the server
-    const token = await login(username(), password());
-    if (token) {
-        cookies.set("syb-username", username());
-        cookies.set("syb-token", token);
+  const handleSubmit: SubmitHandler<LoginForm> = async (e) => {
+    setFailed(false);
 
-        navigate("/")
-        return
+    try {
+      const token = await login(e.username, e.password);
+
+      if (!token) {
+        setFailed(true);
+        return;
+      }
+
+      cookies.set("syb-username", e.username);
+      cookies.set("syb-token", token);
+      navigate("/");
+    } catch (error) {
+      setFailed(true);
     }
-   
   };
 
   return (
@@ -33,34 +45,54 @@ export default function Login() {
             class="h-50 w-50 text-blue-500 mx-auto"
           />
         </div>
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <div class="mb-4">
             <label for="username" class="block text-gray-600">
               Username
             </label>
-            <input
-              type="text"
-              id="username"
+            <Field
               name="username"
-              class="w-full px-4 py-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-              value={username()}
-              onInput={(e) => setUsername(e.target.value)}
-              required
-            />
+              validate={[required("Please enter your username")]}
+            >
+              {(field, props) => (
+                <>
+                  <input
+                    {...props}
+                    class="w-full px-4 py-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    id="username"
+                    type="text"
+                    value={field.value}
+                  />
+                  {field.error && (
+                    <div class="text-red-600 mt-2">{field.error}</div>
+                  )}
+                </>
+              )}
+            </Field>
           </div>
           <div class="mb-4">
             <label for="password" class="block text-gray-600">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
+            <Field
               name="password"
-              class="w-full px-4 py-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-              value={password()}
-              onInput={(e) => setPassword(e.target.value)}
-              required
-            />
+              validate={[required("Please provide a password")]}
+            >
+              {(field, props) => (
+                <>
+                  <input
+                    {...props}
+                    class="w-full px-4 py-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    id="password"
+                    type="password"
+                    value={field.value}
+                  />
+                  {field.error && (
+                    <div class="text-red-600 mt-2">{field.error}</div>
+                  )}
+                </>
+              )}
+            </Field>
           </div>
           <button
             type="submit"
@@ -68,7 +100,12 @@ export default function Login() {
           >
             Login
           </button>
-        </form>
+        </Form>
+        {failed() && (
+          <div class="text-red-600 mt-2">
+            Unable to login, check credentials
+          </div>
+        )}
       </main>
     </div>
   );

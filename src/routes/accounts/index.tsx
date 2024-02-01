@@ -62,9 +62,11 @@ export default function AccountsTab() {
             <Spinner />
           </div>
         )}
-         {!loading() && data().length == 0 && (
+        {!loading() && data().length == 0 && (
           <div class="flex items-center justify-center">
-            <h2 class="text-3xl mt-20">No Accounts Found</h2>
+            <h2 class="text-3xl mt-20">
+              No Accounts Found, should be at least one...
+            </h2>
           </div>
         )}
         {data() && (
