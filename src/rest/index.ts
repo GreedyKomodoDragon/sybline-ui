@@ -216,17 +216,12 @@ export async function login(
 ): Promise<string> {
   const leaderUrl = await getLeaderURL();
 
-  try {
-    const response = await axios.post(`${leaderUrl}/api/v1/login`, {
-      username: username,
-      password: password,
-    });
+  const response = await axios.post(`${leaderUrl}/api/v1/login`, {
+    username: username,
+    password: password,
+  });
 
-    return response.data.token;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
+  return response.data.token;
 }
 
 export async function logout() {
