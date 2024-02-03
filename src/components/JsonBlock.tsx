@@ -19,7 +19,6 @@ const JsonBlock = (prop: props): JSX.Element => {
   return (
     <div class="mt-2 bg-white shadow-md rounded-lg p-4">
       <pre>
-        {/* @ts-ignore */}
         <code
           innerHTML={Prism.highlight(
             getJson(prop.jsonRole),

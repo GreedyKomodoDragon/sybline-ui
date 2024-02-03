@@ -1,4 +1,3 @@
-import { createForm } from "@modular-forms/solid";
 import { useParams } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
 import ActionRow from "~/components/ActionRow";
@@ -58,7 +57,7 @@ export default function Broker() {
               <ul class="mt-4">
                 {data() && (
                   <For each={data()}>
-                    {(queue: string, _) => (
+                    {(queue: string) => (
                       <ActionRow name={queue} url={`/queues/${queue}`} />
                     )}
                   </For>

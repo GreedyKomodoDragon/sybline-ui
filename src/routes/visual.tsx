@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { clientOnly } from "@solidjs/start";
 import { createSignal } from "solid-js";
-import { getAllFullBrokerInfo, getRoutingData } from "~/rest";
+import { getAllFullBrokerInfo } from "~/rest";
 
 const Diagram = clientOnly(() => import("~/components/diagram"));
 
@@ -15,10 +16,12 @@ export default function Visualiser() {
       const edgs = [];
 
       for (let i = 0; i < data.length; i++) {
-        let element = data[i];
+        const element = data[i];
+
+        const nodeRouteName = "node-" + element.key;
 
         ndes.push({
-          id: "node-" + element.key,
+          id: nodeRouteName,
           position: { x: 0, y: 0 },
           data: {
             content: (
@@ -32,10 +35,13 @@ export default function Visualiser() {
           color: "#cecece",
         });
 
+        const nodeStartName = "edge_" + element.key + ":"
         for (let k = 0; k < element.queues.length; k++) {
           const queue = element.queues[k];
+          const nodeQueueName = "node-" + queue;
+
           ndes.push({
-            id: "node-" + queue,
+            id: nodeQueueName,
             position: { x: 0, y: 0 },
             data: {
               content: (
@@ -50,10 +56,10 @@ export default function Visualiser() {
           });
 
           edgs.push({
-            id: "edge_" + element.key + ":" + queue,
-            sourceNode: "node-" + element.key,
+            id: nodeStartName + queue,
+            sourceNode: nodeRouteName,
             sourceOutput: k,
-            targetNode: "node-" + queue,
+            targetNode: nodeQueueName,
             targetInput: 0,
           });
         }

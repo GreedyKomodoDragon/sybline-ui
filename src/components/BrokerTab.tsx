@@ -57,7 +57,7 @@ export default function BrokerTab() {
         )}
         {data() && (
           <For each={data()}>
-            {(key: string, _) => (
+            {(key: string) => (
               <ActionRow name={key} url={`/brokers/${key}`} />
             )}
           </For>

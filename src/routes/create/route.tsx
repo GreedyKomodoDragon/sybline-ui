@@ -14,7 +14,7 @@ type CreateRouteForm = {
 };
 
 export default function Route() {
-  const [_, { Form, Field }] = createForm<CreateRouteForm>();
+  const [, { Form, Field }] = createForm<CreateRouteForm>();
 
   const [checkedDLQ, setCheckedDLQ] = createSignal<boolean>(false);
 

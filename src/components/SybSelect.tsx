@@ -16,7 +16,7 @@ export default function SybSelect(props: SybSelectProps) {
         onChange={props.onChange}  
       >
         <For each={props.options}>
-          {(key: string, _) => <option selected={props.selected == key} value={key}>{key}</option>}
+          {(key: string) => <option selected={props.selected == key} value={key}>{key}</option>}
         </For>
       </select>
       <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">

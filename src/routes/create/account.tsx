@@ -1,4 +1,4 @@
-import { createForm, minLength, required } from "@modular-forms/solid";
+import { createForm, required } from "@modular-forms/solid";
 import { createSignal } from "solid-js";
 import ErrorAlert from "~/components/ErrorAlert";
 import SuccessAlert from "~/components/SuccessAlert";
@@ -11,7 +11,7 @@ type CreateAccountForm = {
 };
 
 export default function CreateAccount() {
-  const [_, { Form, Field }] = createForm<CreateAccountForm>();
+  const [, { Form, Field }] = createForm<CreateAccountForm>();
 
   const [accountCreated, setAccountCreated] = createSignal<boolean>(false);
   const [failed, setFailed] = createSignal<boolean>(false);

@@ -46,7 +46,7 @@ export default function QueueTab() {
         )}
         {data() && (
           <For each={data()}>
-            {(que, _) => (
+            {(que) => (
               <ActionRow name={que.name} url={`/queues/${que.name}`} />
             )}
           </For>

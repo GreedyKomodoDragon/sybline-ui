@@ -69,7 +69,7 @@ export default function Account() {
             <ul class="mt-4">
               {data().length > 0 ? (
                 <For each={data()}>
-                  {(role: Role, _) => (
+                  {(role: Role) => (
                     <div class="m-2">
                       <Collapse roleName={role.name} jsonRole={role.raw} />
                     </div>
