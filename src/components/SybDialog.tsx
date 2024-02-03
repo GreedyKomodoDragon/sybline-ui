@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 interface DialogProps {
   buttonClass?: string;
   buttonText?: string;
-  confirmation: Function;
+  confirmation: () => void;
 }
 
 export default function Dialog(props: DialogProps) {

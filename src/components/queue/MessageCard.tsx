@@ -5,7 +5,7 @@ type MessageCardProps = {
   id: string;
   data: string;
   queue: string;
-  onSuccess: Function;
+  onSuccess: () => void;
 };
 
 export default function MessageCard(props: MessageCardProps) {

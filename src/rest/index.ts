@@ -150,6 +150,26 @@ export async function getQueues(): Promise<Queue[]> {
   }
 }
 
+
+type AllInfo = {
+  key: string;
+  queues: string
+}
+
+export async function getAllFullBrokerInfo(): Promise<AllInfo[]> {
+  if (typeof document === "undefined") {
+    return [];
+  }
+
+  const leaderUrl = await getLeaderURL();
+
+  const response = await axios.get(`${leaderUrl}/api/v1/info/all`, {
+    auth: getAuth(),
+  });
+
+  return response.data;
+}
+
 export async function assignRole(role: string, username: string) {
   if (typeof document === "undefined") {
     return;

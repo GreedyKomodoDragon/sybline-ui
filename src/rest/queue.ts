@@ -16,27 +16,23 @@ export async function getMessages(
 
   const leaderUrl = await getLeaderURL();
 
-  try {
-    const response = await axios.get(`${leaderUrl}/api/v1/queue/fetch`, {
-      auth: getAuth(),
-      params: {
-        queue: name,
-        amount: amount,
-      },
+  const response = await axios.get(`${leaderUrl}/api/v1/queue/fetch`, {
+    auth: getAuth(),
+    params: {
+      queue: name,
+      amount: amount,
+    },
+  });
+
+  const nonBase64: Message[] = [];
+  for (const element of response.data) {
+    nonBase64.push({
+      id: element.id,
+      data: atob(element.data),
     });
-
-    const nonBase64: Message[] = [];
-    for (const element of response.data) {
-      nonBase64.push({
-        id: element.id,
-        data: atob(element.data),
-      });
-    }
-
-    return nonBase64;
-  } catch (error) {
-    throw error;
   }
+
+  return nonBase64;
 }
 
 export async function ackMessage(id: string, queue: string) {
@@ -46,20 +42,16 @@ export async function ackMessage(id: string, queue: string) {
 
   const leaderUrl = await getLeaderURL();
 
-  try {
-    await axios.put(
-      `${leaderUrl}/api/v1/queue/ack`,
-      {
-        id: id,
-        queue: queue,
-      },
-      {
-        auth: getAuth(),
-      }
-    );
-  } catch (error) {
-    throw error;
-  }
+  await axios.put(
+    `${leaderUrl}/api/v1/queue/ack`,
+    {
+      id: id,
+      queue: queue,
+    },
+    {
+      auth: getAuth(),
+    }
+  );
 }
 
 export async function nackMessage(id: string, queue: string) {
@@ -69,20 +61,16 @@ export async function nackMessage(id: string, queue: string) {
 
   const leaderUrl = await getLeaderURL();
 
-  try {
-    await axios.put(
-      `${leaderUrl}/api/v1/queue/nack`,
-      {
-        id: id,
-        queue: queue,
-      },
-      {
-        auth: getAuth(),
-      }
-    );
-  } catch (error) {
-    throw error;
-  }
+  await axios.put(
+    `${leaderUrl}/api/v1/queue/nack`,
+    {
+      id: id,
+      queue: queue,
+    },
+    {
+      auth: getAuth(),
+    }
+  );
 }
 
 export async function createQueue(

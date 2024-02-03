@@ -2,7 +2,7 @@ import { useNavigate } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
 import ActionRow from "~/components/ActionRow";
 import Spinner from "~/components/Spinner";
-import { getAccounts, getRoutingMappings } from "~/rest";
+import { getAccounts } from "~/rest";
 
 export default function AccountsTab() {
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ export default function AccountsTab() {
         )}
         {data() && (
           <For each={data()}>
-            {(key: string, _) => (
+            {(key: string) => (
               <ActionRow name={key} url={`/accounts/${key}`} />
             )}
           </For>

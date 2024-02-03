@@ -13,7 +13,7 @@ interface SubmitFormProps {
 }
 
 export default function SubmitForm(props: SubmitFormProps) {
-  const [_, { Form, Field }] = createForm<SubmitForm>();
+  const [, { Form, Field }] = createForm<SubmitForm>();
 
   const [success, setSuccess] = createSignal<boolean>(false);
   const [failed, setFailed] = createSignal<boolean>(false);

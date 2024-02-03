@@ -10,7 +10,7 @@ type LoginForm = {
 };
 
 export default function Login() {
-  const [_, { Form, Field }] = createForm<LoginForm>();
+  const [, { Form, Field }] = createForm<LoginForm>();
   const [failed, setFailed] = createSignal<boolean>(false);
 
   const cookies = useCookies(["token", "username"]);
