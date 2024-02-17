@@ -1,4 +1,4 @@
-import QueueTab from "~/components/QueueTab";
+import QueueTab from "../../components/QueueTab";
 
 export default function Queues() {
   return (

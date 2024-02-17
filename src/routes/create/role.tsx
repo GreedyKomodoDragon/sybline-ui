@@ -1,10 +1,10 @@
 import { createSignal } from "solid-js";
-import ErrorAlert from "~/components/ErrorAlert";
-import JsonBlock from "~/components/JsonBlock";
-import SuccessAlert from "~/components/SuccessAlert";
-import { createRole } from "~/rest/accounts";
+import ErrorAlert from "../../components/ErrorAlert";
+import JsonBlock from "../../components/JsonBlock";
+import SuccessAlert from "../../components/SuccessAlert";
+import { createRole } from "../../rest/accounts";
 
-export default function Role() {
+export default function CreateRole() {
   const [raw, setRaw] = createSignal<string>("{}");
 
   const [success, setSuccess] = createSignal<boolean>(false);

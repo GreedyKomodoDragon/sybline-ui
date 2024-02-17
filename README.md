@@ -2,16 +2,15 @@
 <img src="./public/logo_full.svg" width="450"/>
 </p>
 
-
 # Sybline Management UI
 
 A management UI for the sybline broker. It utilises the REST API in the sybline cluster to perform actions.
 
 It is built using:
 
-* SolidStart
+* SolidJS
 * Tailwindcss
-* Vinxi
+* Vite
 
 
 ## Table of Contents
@@ -35,12 +34,6 @@ npm run dev
 ```
 
 ### URL Variables
-
-You will need to create to a env variable in the `.env` file, like the following:
-
-```
-SYB_ADDRESS="http://127.0.0.1:7880"
-```
 
 This can be any of the clusters urls. You will also need to load into the `public/config/config.json` a file that looks like the following:
 

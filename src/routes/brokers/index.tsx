@@ -1,4 +1,4 @@
-import BrokerTab from "~/components/BrokerTab";
+import BrokerTab from "../../components/BrokerTab";
 
 export default function Brokers() {
   return (

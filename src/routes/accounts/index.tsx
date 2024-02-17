@@ -1,8 +1,8 @@
 import { useNavigate } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
-import ActionRow from "~/components/ActionRow";
-import Spinner from "~/components/Spinner";
-import { getAccounts } from "~/rest";
+import ActionRow from "../../components/ActionRow";
+import Spinner from "../../components/Spinner";
+import { getAccounts } from "../../rest";
 
 export default function AccountsTab() {
   const navigate = useNavigate();

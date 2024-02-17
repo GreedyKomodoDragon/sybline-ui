@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookieValue } from "~/middleware";
+import { getCookie } from "../utils/cookies";
 
 export interface RoutingMapping {
   keys: string[];
@@ -150,11 +150,10 @@ export async function getQueues(): Promise<Queue[]> {
   }
 }
 
-
 type AllInfo = {
   key: string;
-  queues: string
-}
+  queues: string;
+};
 
 export async function getAllFullBrokerInfo(): Promise<AllInfo[]> {
   if (typeof document === "undefined") {
@@ -215,10 +214,7 @@ export async function isLogged(
   username: string,
   token: string
 ): Promise<boolean> {
-  let url = process.env.SYB_ADDRESS || "";
-  if (!url) {
-    url = await getAnyURL();
-  }
+  let url = await getAnyURL();
 
   const response = await axios.get(`${url}/api/v1/login`, {
     auth: {
@@ -234,6 +230,7 @@ export async function login(
   username: string,
   password: string
 ): Promise<string> {
+
   const leaderUrl = await getLeaderURL();
 
   const response = await axios.post(`${leaderUrl}/api/v1/login`, {
@@ -277,12 +274,12 @@ export async function createAccount(username: string, password: string) {
 }
 
 export function getAuth(): { username: string; password: string } {
-  const token = getCookieValue(document.cookie, "syb-token");
+  const token = getCookie("syb-token");
   if (!token) {
     throw "failed to get token";
   }
 
-  const username = getCookieValue(document.cookie, "syb-username");
+  const username = getCookie("syb-username");
   if (!username) {
     throw "failed to get username";
   }
@@ -296,9 +293,7 @@ export function getAuth(): { username: string; password: string } {
 let leaderUrl = "";
 
 export async function isLeader(url: string): Promise<boolean> {
-  const response = await axios.get(`${url}/api/v1/info/isLeader`, {
-    auth: getAuth(),
-  });
+  const response = await axios.get(`${url}/api/v1/info/isLeader`);
 
   return response.data.isLeader === true;
 }

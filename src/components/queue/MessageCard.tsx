@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import { ackMessage, nackMessage } from "~/rest/queue";
+import { ackMessage, nackMessage } from "../../rest/queue";
 
 type MessageCardProps = {
   id: string;

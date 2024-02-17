@@ -1,9 +1,9 @@
 import { useParams } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
-import ErrorAlert from "~/components/ErrorAlert";
-import MessageCard from "~/components/queue/MessageCard";
-import QueueInfo from "~/components/queue/QueueInfo";
-import { Message, getMessages } from "~/rest/queue";
+import ErrorAlert from "../../components/ErrorAlert";
+import MessageCard from "../../components/queue/MessageCard";
+import QueueInfo from "../../components/queue/QueueInfo";
+import { Message, getMessages } from "../../rest/queue";
 
 export default function Queues() {
   const params = useParams<{ name: string }>();

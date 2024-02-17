@@ -1,8 +1,8 @@
 import { createForm, required } from "@modular-forms/solid";
 import { createSignal } from "solid-js";
-import { SubmitMessage } from "~/rest/broker";
 import ErrorAlert from "../ErrorAlert";
 import SuccessAlert from "../SuccessAlert";
+import { SubmitMessage } from "../../rest/broker";
 
 type SubmitForm = {
   message: string;

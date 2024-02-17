@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
-import Collapse from "~/components/Collapse";
-import Spinner from "~/components/Spinner";
-import { Role, getRoles } from "~/rest";
+import Collapse from "../../components/Collapse";
+import Spinner from "../../components/Spinner";
+import { Role, getRoles } from "../../rest";
 
 export default function Account() {
   const params = useParams<{ name: string }>();

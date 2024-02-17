@@ -1,5 +1,5 @@
-import { logout } from "~/rest";
-import { removeCookie } from "~/utils/cookies";
+import { logout } from "../rest";
+import { removeCookie } from "../utils/cookies";
 
 export default function NavBar() {
   return (
