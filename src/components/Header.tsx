@@ -7,12 +7,13 @@ export default function Header() {
 
   return (
     <>
-      {location.pathname != "/login" && (
-        <>
-          <NavBar />
-          <Tabs />
-        </>
-      )}
+      {location.pathname !== "/login" &&
+        location.pathname !== "/page-missing" && (
+          <>
+            <NavBar />
+            <Tabs />
+          </>
+        )}
     </>
   );
 }

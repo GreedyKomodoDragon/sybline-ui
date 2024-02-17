@@ -22,14 +22,7 @@ import NotFound from "./routes/[...404]";
 import { ProtectedRoute } from "./components/protected/ProtectedRoute";
 
 const NavApp: Component<RouteSectionProps<unknown>> = (props) => {
-  const { pathname } = props.location;
-
-  if (pathname === "/login" || pathname === "/page-missing") {
-    return <>{props.children}</>;
-  }
-
-  // Render the Header component for other paths
-  return (
+   return (
     <>
       <Header />
       {props.children}
