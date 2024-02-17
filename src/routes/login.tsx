@@ -29,10 +29,8 @@ export default function Login() {
       setCookie("syb-username", e.username);
       setCookie("syb-token", token);
 
-      console.log("set the tokens")
       navigate("/");
     } catch (error) {
-      console.log(error)
       setFailed(true);
     }
   };

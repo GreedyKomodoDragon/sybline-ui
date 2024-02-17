@@ -16,9 +16,7 @@ export const ProtectedRoute = <P extends object>(
         nav("/login");
         return;
       }
-
-      console.log("token:", token)
-
+      
       const username = getCookie("syb-username");
       if (!username) {
         nav("/login");

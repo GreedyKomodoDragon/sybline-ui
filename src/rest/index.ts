@@ -216,8 +216,6 @@ export async function isLogged(
 ): Promise<boolean> {
   let url = await getAnyURL();
 
-  console.log("username", username, token)
-
   const response = await axios.get(`${url}/api/v1/login`, {
     auth: {
       username: username,
@@ -233,16 +231,13 @@ export async function login(
   password: string
 ): Promise<string> {
 
-  console.log("leader")
   const leaderUrl = await getLeaderURL();
-  console.log("leader:", leaderUrl)
 
   const response = await axios.post(`${leaderUrl}/api/v1/login`, {
     username: username,
     password: password,
   });
 
-  console.log(response)
   return response.data.token;
 }
 
@@ -312,9 +307,7 @@ export async function getLeaderURL(): Promise<string> {
   const data = await f.json();
 
   for (const url of data.urls) {
-    console.log("before")
     const leaderFound = await isLeader(url);
-    console.log(leaderFound)
     if (leaderFound) {
       leaderUrl = url;
       return url;

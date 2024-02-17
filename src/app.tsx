@@ -24,8 +24,6 @@ import { ProtectedRoute } from "./components/protected/ProtectedRoute";
 const NavApp: Component<RouteSectionProps<unknown>> = (props) => {
   const { pathname } = props.location;
 
-  console.log(pathname)
-
   if (pathname === "/login" || pathname === "/page-missing") {
     return <>{props.children}</>;
   }
