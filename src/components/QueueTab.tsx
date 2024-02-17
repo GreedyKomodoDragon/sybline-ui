@@ -1,6 +1,6 @@
 import { For, createSignal } from "solid-js";
 import ActionRow from "./ActionRow";
-import { Queue, getQueues } from "~/rest";
+import { Queue, getQueues } from"../rest";
 import Spinner from "./Spinner";
 
 export default function QueueTab() {

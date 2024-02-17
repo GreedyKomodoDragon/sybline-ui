@@ -1,8 +1,8 @@
 import { SubmitHandler, createForm, required } from "@modular-forms/solid";
-import { useCookies } from "@solidjs-use/integrations/useCookies";
 import { useNavigate } from "@solidjs/router";
 import { createSignal } from "solid-js";
-import { login } from "~/rest";
+import { login } from "../rest";
+import { setCookie } from "../utils/cookies";
 
 type LoginForm = {
   username: string;
@@ -13,7 +13,6 @@ export default function Login() {
   const [, { Form, Field }] = createForm<LoginForm>();
   const [failed, setFailed] = createSignal<boolean>(false);
 
-  const cookies = useCookies(["token", "username"]);
   const navigate = useNavigate();
 
   const handleSubmit: SubmitHandler<LoginForm> = async (e) => {
@@ -27,10 +26,13 @@ export default function Login() {
         return;
       }
 
-      cookies.set("syb-username", e.username);
-      cookies.set("syb-token", token);
+      setCookie("syb-username", e.username);
+      setCookie("syb-token", token);
+
+      console.log("set the tokens")
       navigate("/");
     } catch (error) {
+      console.log(error)
       setFailed(true);
     }
   };

@@ -1,9 +1,9 @@
 import { useSearchParams } from "@solidjs/router";
 import { createSignal } from "solid-js";
-import JsonBlock from "~/components/JsonBlock";
-import Dialog from "~/components/SybDialog";
-import SybSelect from "~/components/SybSelect";
-import { getAccounts, getRoles, unassignRole } from "~/rest";
+import JsonBlock from "../../components/JsonBlock";
+import Dialog from "../../components/SybDialog";
+import SybSelect from "../../components/SybSelect";
+import { getRoles, getAccounts, unassignRole } from "../../rest";
 
 const getIndex = (selectRole: string, array: string[]) => {
   for (let index = 0; index < array.length; index++) {
@@ -16,7 +16,7 @@ const getIndex = (selectRole: string, array: string[]) => {
   return 0;
 };
 
-export default function Remove() {
+export default function RoleUnassign() {
   const [searchParams] = useSearchParams();
 
   const [roles, setRoles] = createSignal<string[]>([]);

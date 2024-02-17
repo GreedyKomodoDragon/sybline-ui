@@ -1,10 +1,10 @@
 import { createForm, required } from "@modular-forms/solid";
 import { createSignal } from "solid-js";
-import ErrorAlert from "~/components/ErrorAlert";
-import SuccessAlert from "~/components/SuccessAlert";
-import SybSwitch from "~/components/inputs/Switch";
-import { createQueue } from "~/rest/queue";
-import { minNumber } from "~/utils/modular";
+import ErrorAlert from "../../components/ErrorAlert";
+import SuccessAlert from "../../components/SuccessAlert";
+import SybSwitch from "../../components/inputs/Switch";
+import { createQueue } from "../../rest/queue";
+import { minNumber } from "../../utils/modular";
 
 type CreateRouteForm = {
   brokerName: string;
@@ -13,7 +13,7 @@ type CreateRouteForm = {
   queueSize: number;
 };
 
-export default function Route() {
+export default function CreateRoute() {
   const [, { Form, Field }] = createForm<CreateRouteForm>();
 
   const [checkedDLQ, setCheckedDLQ] = createSignal<boolean>(false);

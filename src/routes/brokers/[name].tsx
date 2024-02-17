@@ -1,9 +1,9 @@
 import { useParams } from "@solidjs/router";
 import { For, createSignal } from "solid-js";
-import ActionRow from "~/components/ActionRow";
-import Spinner from "~/components/Spinner";
-import SubmitForm from "~/components/broker/SubmitForm";
-import { getRoutingData } from "~/rest";
+import ActionRow from "../../components/ActionRow";
+import Spinner from "../../components/Spinner";
+import SubmitForm from "../../components/broker/SubmitForm";
+import { getRoutingData } from "../../rest";
 
 export default function Broker() {
   const params = useParams<{ name: string }>();

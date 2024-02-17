@@ -1,4 +1,4 @@
-import RightArrow from "~/icons/RightArrow";
+import RightArrow from "../icons/RightArrow";
 
 interface ActionRowProps {
   name: string;

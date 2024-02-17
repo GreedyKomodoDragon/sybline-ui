@@ -1,8 +1,9 @@
 import { createForm, required } from "@modular-forms/solid";
 import { createSignal } from "solid-js";
-import ErrorAlert from "~/components/ErrorAlert";
-import SuccessAlert from "~/components/SuccessAlert";
-import { createAccount } from "~/rest";
+import ErrorAlert from "../../components/ErrorAlert";
+import SuccessAlert from "../../components/SuccessAlert";
+import { createAccount } from "../../rest";
+
 
 type CreateAccountForm = {
   username: string;

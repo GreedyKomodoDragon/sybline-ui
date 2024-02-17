@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { clientOnly } from "@solidjs/start";
 import { createSignal } from "solid-js";
-import { getAllFullBrokerInfo } from "~/rest";
-
-const Diagram = clientOnly(() => import("~/components/diagram"));
+import { getAllFullBrokerInfo } from"../rest";
+import Diagram from "../components/diagram";
 
 export default function Visualiser() {
   const [loading, setLoading] = createSignal<boolean>(true);

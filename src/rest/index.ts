@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookieValue } from "~/middleware";
+import { getCookie } from "../utils/cookies";
 
 export interface RoutingMapping {
   keys: string[];
@@ -150,11 +150,10 @@ export async function getQueues(): Promise<Queue[]> {
   }
 }
 
-
 type AllInfo = {
   key: string;
-  queues: string
-}
+  queues: string;
+};
 
 export async function getAllFullBrokerInfo(): Promise<AllInfo[]> {
   if (typeof document === "undefined") {
@@ -215,10 +214,9 @@ export async function isLogged(
   username: string,
   token: string
 ): Promise<boolean> {
-  let url = process.env.SYB_ADDRESS || "";
-  if (!url) {
-    url = await getAnyURL();
-  }
+  let url = await getAnyURL();
+
+  console.log("username", username, token)
 
   const response = await axios.get(`${url}/api/v1/login`, {
     auth: {
@@ -234,13 +232,17 @@ export async function login(
   username: string,
   password: string
 ): Promise<string> {
+
+  console.log("leader")
   const leaderUrl = await getLeaderURL();
+  console.log("leader:", leaderUrl)
 
   const response = await axios.post(`${leaderUrl}/api/v1/login`, {
     username: username,
     password: password,
   });
 
+  console.log(response)
   return response.data.token;
 }
 
@@ -277,12 +279,12 @@ export async function createAccount(username: string, password: string) {
 }
 
 export function getAuth(): { username: string; password: string } {
-  const token = getCookieValue(document.cookie, "syb-token");
+  const token = getCookie("syb-token");
   if (!token) {
     throw "failed to get token";
   }
 
-  const username = getCookieValue(document.cookie, "syb-username");
+  const username = getCookie("syb-username");
   if (!username) {
     throw "failed to get username";
   }
@@ -296,9 +298,7 @@ export function getAuth(): { username: string; password: string } {
 let leaderUrl = "";
 
 export async function isLeader(url: string): Promise<boolean> {
-  const response = await axios.get(`${url}/api/v1/info/isLeader`, {
-    auth: getAuth(),
-  });
+  const response = await axios.get(`${url}/api/v1/info/isLeader`);
 
   return response.data.isLeader === true;
 }
@@ -312,7 +312,9 @@ export async function getLeaderURL(): Promise<string> {
   const data = await f.json();
 
   for (const url of data.urls) {
+    console.log("before")
     const leaderFound = await isLeader(url);
+    console.log(leaderFound)
     if (leaderFound) {
       leaderUrl = url;
       return url;

@@ -1,8 +1,8 @@
 import { For, createSignal } from "solid-js";
 import ActionRow from "./ActionRow";
-import { getRoutingMappings } from "~/rest";
 import Spinner from "./Spinner";
 import { useNavigate } from "@solidjs/router";
+import { getRoutingMappings } from "../rest";
 
 export default function BrokerTab() {
   const navigate = useNavigate();
@@ -57,9 +57,7 @@ export default function BrokerTab() {
         )}
         {data() && (
           <For each={data()}>
-            {(key: string) => (
-              <ActionRow name={key} url={`/brokers/${key}`} />
-            )}
+            {(key: string) => <ActionRow name={key} url={`/brokers/${key}`} />}
           </For>
         )}
       </div>
